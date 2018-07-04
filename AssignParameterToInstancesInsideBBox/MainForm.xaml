@@ -1,0 +1,86 @@
+﻿<Window x:Class="AssignParameterToInstancesInsideBBox.MainForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AssignParameterToInstancesInsideBBox"
+             mc:Ignorable="d" Title="MEP Room"
+             Height="250" Width="450" ResizeMode="NoResize" Closed="Window_Closed" WindowStartupLocation="CenterScreen" 
+       >
+    <Window.Resources >
+        <Style x:Key="boxWidthHeight" TargetType="Control">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <!--Имя формообразующего семейства-->
+        <TextBlock 
+            Margin="5"
+            Grid.Column="0"
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            TextWrapping="Wrap"
+            Text="Имя формообразующего семейства"/>
+        <TextBox 
+            Name="txtbox_massFamilyName" 
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="Прямоугольник-Сложный"
+            
+            Style="{StaticResource boxWidthHeight}"/>
+
+        <!--Параметр формообразующего семейства-->
+        <TextBlock 
+            Margin="5"
+            Grid.Column="0"
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            TextWrapping="Wrap"
+            Text="Параметр формообразующего семейства"/>
+        <TextBox 
+            Name="txtbox_massParameterName" 
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="UID"
+            Style="{StaticResource boxWidthHeight}"/>
+        
+        <!--Категории для присвоения параметра-->
+        <TextBlock 
+            Margin="5"
+            Grid.Column="0"
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            TextWrapping="Wrap"
+            Text="Параметр MEP семейства"/>
+        <TextBox 
+            Name="txtbox_instancesInsideMassParameterName" 
+            Grid.Row="2"
+            Grid.Column="1"
+            Style="{StaticResource boxWidthHeight}"
+            Text="UID"/>
+        
+        <!--Применить-->
+        <Button Style="{StaticResource boxWidthHeight}"
+                Name="btnAccept"
+                Content="Применить"
+                Grid.Row="3"
+                Grid.ColumnSpan="2" Click="btnAccept_Click"
+                />
+    </Grid>
+</Window>
