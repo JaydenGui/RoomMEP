@@ -15,7 +15,7 @@ namespace AssignParameterToInstancesInsideBBox.Models
         public BoxedElement(Element massElement, Element element)
         {
             MassElement = massElement;
-            Element = element as Element;
+            Element = element;
         }
     }
 }

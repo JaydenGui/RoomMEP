@@ -61,29 +61,30 @@ namespace AssignParameterToInstancesInsideBBox
                 MessageBox.Show($"Не найдено семейство с именем {txtbox_massFamilyName.Text}");
                 return;
             }
-            var categoryList = new List<BuiltInCategory> {
-                                                            BuiltInCategory.OST_CableTray,
-                                                            BuiltInCategory.OST_CableTrayFitting,
-                                                            BuiltInCategory.OST_Conduit,
-                                                            BuiltInCategory.OST_ConduitFitting,
-                                                            BuiltInCategory.OST_DuctCurves,
-                                                            BuiltInCategory.OST_DuctFitting,
-                                                            BuiltInCategory.OST_DuctTerminal,
-                                                            BuiltInCategory.OST_ElectricalEquipment,
-                                                            BuiltInCategory.OST_ElectricalFixtures,
-                                                            BuiltInCategory.OST_LightingDevices,
-                                                            BuiltInCategory.OST_LightingFixtures,
-                                                            BuiltInCategory.OST_MechanicalEquipment,
-                                                            BuiltInCategory.OST_PipeCurves,
-                                                            BuiltInCategory.OST_PipeFitting,
-                                                            BuiltInCategory.OST_PlumbingFixtures,
-                                                            BuiltInCategory.OST_SpecialityEquipment,
-                                                            BuiltInCategory.OST_Sprinklers,
-                                                            BuiltInCategory.OST_Wire};
-            var boxedFamilyRepo = new BoxedElementRepo(_commandData, categoryList);
+            //var categoryList = new List<BuiltInCategory> {
+            //                                                BuiltInCategory.OST_CableTray,
+            //                                                BuiltInCategory.OST_CableTrayFitting,
+            //                                                BuiltInCategory.OST_Conduit,
+            //                                                BuiltInCategory.OST_ConduitFitting,
+            //                                                BuiltInCategory.OST_DuctCurves,
+            //                                                BuiltInCategory.OST_DuctFitting,
+            //                                                BuiltInCategory.OST_DuctTerminal,
+            //                                                BuiltInCategory.OST_ElectricalEquipment,
+            //                                                BuiltInCategory.OST_ElectricalFixtures,
+            //                                                BuiltInCategory.OST_LightingDevices,
+            //                                                BuiltInCategory.OST_LightingFixtures,
+            //                                                BuiltInCategory.OST_MechanicalEquipment,
+            //                                                BuiltInCategory.OST_PipeCurves,
+            //                                                BuiltInCategory.OST_PipeFitting,
+            //                                                BuiltInCategory.OST_PlumbingFixtures,
+            //                                                BuiltInCategory.OST_SpecialityEquipment,
+            //                                                BuiltInCategory.OST_Sprinklers,
+            //                                                BuiltInCategory.OST_Wire};
+            var boxedFamilyRepo = new BoxedElementRepo(_commandData/*, categoryList*/);
 
             foreach (var massFInstance in massFInstanceList)
             {
+                //Берём значения из масс семейства
                 string massParamStringValue = string.Empty;
                 double massParamDoubleValue = 0;
                 int massParamIntValue = 0;
@@ -94,12 +95,13 @@ namespace AssignParameterToInstancesInsideBBox
                     MessageBox.Show($"Не удалось получить значение параметра для семейства с ID {massFInstance.Element.Id}");
                     return;
                 }
+
                 var boxedFInstances = boxedFamilyRepo.GetBoxedInstances(massFInstance);
                 foreach (var boxedFInstance in boxedFInstances)
                 {
                     var boxedFInstanceParam = boxedFInstance.Element
                                                             .LookupParameter(txtbox_instancesInsideMassParameterName.Text);
-                    if (boxedFInstanceParam == null)
+                    if (boxedFInstanceParam == null || boxedFInstanceParam.IsReadOnly)
                     {
                         continue;
                     }
