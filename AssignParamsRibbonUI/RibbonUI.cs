@@ -44,6 +44,24 @@ namespace AssignParamsRibbonUI
             button1.LargeImage = new BitmapImage(new Uri(imageName1, UriKind.Absolute));
             button1.ToolTipImage = new BitmapImage(new Uri(imageName1, UriKind.Absolute));
             button1.ToolTip = appDesc1;
+
+            var appDesc2 = "MEP Mass Cut";
+            var newPanel = newRibbon.AddPanel(app, tabName, appDesc2);
+            var folderPath2 = @"C:\Program Files\BIMTech Utils\MEP\MEP Room";
+            var appNamespace2 = "CutMEPCurvesByMassEdges";
+            var dllPath2 = $@"Contents\{appNamespace2}.dll";
+            var fullPath2 = Path.Combine(folderPath2, dllPath2);
+            //добавляем кнопку на панель
+            var button2 = newPanel.AddButton(
+                appDesc2,
+                fullPath2,
+                $"{appNamespace2}.Main");
+            //задаём кнопке изображение
+            var imageName2 = Path.Combine(folderPath2, @"UI\Images\mep_cut.png");
+            button2.Image = new BitmapImage(new Uri(imageName2, UriKind.Absolute));
+            button2.LargeImage = new BitmapImage(new Uri(imageName2, UriKind.Absolute));
+            button2.ToolTipImage = new BitmapImage(new Uri(imageName2, UriKind.Absolute));
+            button2.ToolTip = appDesc2;
             #endregion
             return Result.Succeeded;
         }
