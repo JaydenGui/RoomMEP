@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParameterToInstancesInsideBBox", "AssignParameterToInstancesInsideBBox\AssignParameterToInstancesInsideBBox.csproj", "{5F53EE15-AFBE-4278-A1F3-6A47912D910B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4305DD02-B631-40CA-A0AA-98B08EDF5F17} = {4305DD02-B631-40CA-A0AA-98B08EDF5F17}
+		{57025EB5-24D9-4C72-8DBA-23077A5088A1} = {57025EB5-24D9-4C72-8DBA-23077A5088A1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParamsRibbonUI", "AssignParamsRibbonUI\AssignParamsRibbonUI.csproj", "{BAB520F1-49A5-4BD5-99E5-793E8B36B230}"
 EndProject
@@ -12,6 +16,10 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMEPRoom", "SetupMEPRoom\SetupMEPRoom.vdproj", "{2327DE75-E1C6-41CD-89FD-FA89C47A8221}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CutMEPCurvesByMassEdges", "CutMEPCurvesByMassEdges\CutMEPCurvesByMassEdges.csproj", "{63963DE3-0EF0-4D40-BA45-3F4F1A809722}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0AFC5D03-A409-4D69-B4BA-7B7A735DB328} = {0AFC5D03-A409-4D69-B4BA-7B7A735DB328}
+		{57025EB5-24D9-4C72-8DBA-23077A5088A1} = {57025EB5-24D9-4C72-8DBA-23077A5088A1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitPSVUtils", "..\RevitPSVUtils\RevitPSVUtils\RevitPSVUtils.csproj", "{57025EB5-24D9-4C72-8DBA-23077A5088A1}"
 EndProject

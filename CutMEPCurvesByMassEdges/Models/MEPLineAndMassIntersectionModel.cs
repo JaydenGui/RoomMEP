@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RevitPSVUtils;
-using Autodesk.Revit.UI;
 
 namespace CutMEPCurvesByMassEdges.Models
 {
-    public class MassFormModel
+    public abstract class MEPLineAndMassIntersectionModel
     {
-        public FamilyInstance Model { get; set; }
-        public List<Face> Faces { get; set; }
+        public MassFormModel MassForm { get; set; }
+        public List<XYZ> IntersectionPoints { get; set; } = new List<XYZ>();
     }
 }

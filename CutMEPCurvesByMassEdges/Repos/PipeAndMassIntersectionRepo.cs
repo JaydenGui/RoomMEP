@@ -1,23 +1,18 @@
 ﻿using Autodesk.Revit.DB;
+using CutMEPCurvesByMassEdges.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RevitPSVUtils;
-using static RevitPSVUtils.PipeExts;
 
-namespace CutMEPCurvesByMassEdges.Models
+namespace CutMEPCurvesByMassEdges.Repos
 {
-    public class PipeAndMassFormIntersection
+    public class PipeAndMassIntersectionRepo
     {
-        public PipeModel Pipe { get; set; }
-        public MassFormModel MassForm { get; set; }
-        public List<XYZ> IntersectionPoints { get; set; } = new List<XYZ>();
-
-        private static PipeAndMassFormIntersection GetIntersection(PipeModel pipeModel, MassFormModel massFormModel)
+        private static PipeAndMassIntersectionModel GetIntersection(PipeModel pipeModel, MassFormModel massFormModel)
         {
-            var intersectionsInstance = new PipeAndMassFormIntersection { Pipe = pipeModel, MassForm = massFormModel };
+            var intersectionsInstance = new PipeAndMassIntersectionModel { Pipe = pipeModel, MassForm = massFormModel };
             var pipeCurveStartPoint = pipeModel.StarPoint;
             var pipeCurveEndPoint = pipeModel.EndPoint;
 
@@ -47,10 +42,10 @@ namespace CutMEPCurvesByMassEdges.Models
             return (intersectionsInstance.IntersectionPoints.Count > 0) ? intersectionsInstance : null;
         }
 
-        public static List<PipeAndMassFormIntersection> GetIntersectionList(List<PipeModel> pipeModelList,
+        public static List<PipeAndMassIntersectionModel> GetIntersectionList(List<PipeModel> pipeModelList,
             List<MassFormModel> massFormModelList)
         {
-            var pipeAndMassFormIntersectionList = new List<PipeAndMassFormIntersection>();
+            var pipeAndMassFormIntersectionList = new List<PipeAndMassIntersectionModel>();
 
             foreach (var massFormItem in massFormModelList)
             {

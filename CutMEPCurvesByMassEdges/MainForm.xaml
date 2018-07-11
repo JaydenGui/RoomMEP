@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CutMEPCurvesByMassEdges"
              mc:Ignorable="d" Title="Обрезать линейные объекты по формообразующим "
-             Height="150" Width="200" ResizeMode="NoResize">
+             Height="150" Width="200" ResizeMode="NoResize" Closed="Window_Closed">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

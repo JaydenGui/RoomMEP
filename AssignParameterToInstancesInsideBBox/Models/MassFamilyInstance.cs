@@ -25,7 +25,8 @@ namespace AssignParameterToInstancesInsideBBox.Models
 
         public List<List<XYZ>> GetFacePoints()
         {
-            return Element.GetFacePointsFromElement();
+            //return Element.GetFacePointsFromElement();
+            return Element.GetEdgePointsFromElement();
         }
     }
 }

@@ -78,7 +78,8 @@ namespace AssignParameterToInstancesInsideBBox
                     return;
                 }
 
-                var boxedFInstances = boxedFamilyRepo.GetBoxedInstances(massFInstance);
+                var boxedFInstances = boxedFamilyRepo.GetBoxedInstances(massFInstance, true);
+
                 foreach (var boxedFInstance in boxedFInstances)
                 {
                     var boxedFInstanceParam = boxedFInstance.Element

@@ -11,6 +11,7 @@ using static RevitPSVUtils.XYZUtils;
 using static RevitPSVUtils.ElementExts;
 using static RevitPSVUtils.NumberUtils;
 using MoreLinq;
+using Autodesk.Revit.DB.DirectContext3D;
 
 namespace AssignParameterToInstancesInsideBBox.Repos
 {
@@ -85,6 +86,59 @@ namespace AssignParameterToInstancesInsideBBox.Repos
                 if (!IsInRange(elementMidPoint.Z, massMinZCoord, massMaxZCoord))
                     //и если элемент не в диапазоне, то улетаем
                     isElementPointsInsideMass = false;
+
+                //Если элемент находится внутри масс-формы, то добавляем его
+                if (isElementPointsInsideMass)
+                {
+                    var boxedFInstance = new BoxedElement(massFamilyInstance.Element, oElement);
+                    boxedFInstances.Add(boxedFInstance);
+                }
+            }
+            return boxedFInstances;
+        }
+
+        public List<BoxedElement> GetBoxedInstances(MassFamilyInstance massFamilyInstance, bool methodToTest)
+        {
+            var boxedFInstances = new List<BoxedElement>();
+            //берем всё экземляры определённой категории
+            var elementList = RevitPSVUtils.ElementUtils
+                                    .GetModelElements(massFamilyInstance.Doc)
+                                    .Where(e => e.get_BoundingBox(null) != null &&
+                                                    e.Category != null &&
+                                                    e.Location != null &&
+                                                    !(e is BasePoint))
+                                    .ToList();
+
+            foreach (var oElement in elementList)
+            {
+                if (oElement.Equals(massFamilyInstance.Element))
+                    continue;
+                var elementBoundBox = oElement.get_BoundingBox(null);
+                if (elementBoundBox == null)
+                    continue;
+                var elementMidPoint = oElement.GetMiddlePoint();
+                if (elementMidPoint == null)
+                    continue;
+
+                //Проецируем среднюю точку элементов на грани масс-формы
+                //Если точка не проецируется, то она не находится внутри
+                var faces = massFamilyInstance.Element.GetFacesFromElement();
+                var elemMidPoint = oElement.GetMiddlePoint();
+                var isElementPointsInsideMass = true;
+
+                int faceHitByElement = 0;
+                foreach (var faceItem in faces)
+                {
+                    var intResult = faceItem.Project(elemMidPoint);
+                    if (intResult != null)
+                        faceHitByElement++;
+                }
+
+                if (faceHitByElement < 3)
+                    isElementPointsInsideMass = false;
+
+                //bool isElementPointsInsideMass = RevitPSVUtils.IntersectorUtils
+                //                                    .IsElementInsideFaces(oElement, massFamilyInstance.Element);
 
                 //Если элемент находится внутри масс-формы, то добавляем его
                 if (isElementPointsInsideMass)

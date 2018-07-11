@@ -1,32 +1,11 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using Autodesk.Revit.DB.Structure;
-using RevitPSVUtils;
-using RevitPSVUtils.EnumData;
-using Line = Autodesk.Revit.DB.Line;
+using CutMEPCurvesByMassEdges.Repos;
+using System;
 using System.Xml.Linq;
-using Autodesk.Revit.DB.Plumbing;
-using Autodesk.Revit.DB.Mechanical;
-using Autodesk.Revit.DB.Electrical;
-
-using static RevitPSVUtils.ElementExts;
-using CutMEPCurvesByMassEdges.Models;
+using static TextFilesDealer.DirectoryUtils;
+using System.IO;
 
 namespace CutMEPCurvesByMassEdges
 {
@@ -39,6 +18,8 @@ namespace CutMEPCurvesByMassEdges
         private UIApplication uiapp;
         private UIDocument uidoc;
         private Document doc;
+        private string xmlDocUserInputFilePath;
+        private string xmlAutoSettingsFileName = "CutMEPCurvesByMass.xml";
 
         public MainForm(ExternalCommandData commandData)
         {
@@ -53,42 +34,108 @@ namespace CutMEPCurvesByMassEdges
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
+
+            xmlDocUserInputFilePath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                xmlAutoSettingsFileName);
+
+            var oXmlDealer = new XMLDealer();
+            oXmlDealer.GetXMLDataToWPF(xmlDocUserInputFilePath, ref txtboxMassFormName);
         }
 
         private void btnAccept_Click(object sender, RoutedEventArgs e)
         {
             //собираем все линейные объекты и масс-формы по названию
 
-            var massForms = MassFormModel.GetMassFormModels(_commandData, txtboxMassFormName.Text);
-            var pipes = PipeModel.GetPipeModels(_commandData);
+            var massForms = MassFormRepo.GetMassFormModels(_commandData, txtboxMassFormName.Text);
+            if (massForms.Count == 0)
+            {
+                MessageBox.Show($"Не найдены формобразующие с именем семейства {txtboxMassFormName.Text}. ");
+                return;
+            }
+            //И собираем все MEP элементы со всеми коннекторами
+            var mepElements = MEPElementRepo.GetMEPElementsFromModel(_commandData);
+
+            #region Трубы
+            var pipes = PipeRepo.GetPipeModels(_commandData);
 
             //берём масс-формы и трубы, находим точки пересечения
-            var pipeAndMassFormIntersectionList = PipeAndMassFormIntersection
+            var pipeAndMassFormIntersectionList = PipeAndMassIntersectionRepo
                                                     .GetIntersectionList(pipes, massForms);
 
             //создаём отдельные трубы из труб, которые пересекаются с формообразующими
-            foreach (var pipeAndMassInt in pipeAndMassFormIntersectionList)
-            {
-                var pointsToCreatePipes = new List<XYZ>();
-                pointsToCreatePipes.Add(pipeAndMassInt.Pipe.StarPoint);
-                pointsToCreatePipes.AddRange(pipeAndMassInt.IntersectionPoints
-                                                .OrderBy(p => p.DistanceTo(pipeAndMassInt.Pipe.StarPoint)).ToList());
-                pointsToCreatePipes.Add(pipeAndMassInt.Pipe.EndPoint);
-                for (int i = 0; i < pointsToCreatePipes.Count; i++)
-                {
-                    if (i == 0)
-                        continue;
-                    var currentPoint = pointsToCreatePipes[i];
-                    var prevPoint = pointsToCreatePipes[i - 1];
-                    if (currentPoint.IsEqualByXYZ(prevPoint))
-                        continue;
-                    PipesUtils.CreateNewPipeByTypeOfExisted(
-                        pipeAndMassInt.Pipe.Model, currentPoint, prevPoint, _commandData);
-                }
-                DeleteUtils.DeleteElements(_commandData, new List<Element> { pipeAndMassInt.Pipe.Model });
-            }
+            var pipeFactory = new PipesFactoryRepo();
+            pipeFactory.CreatePipesFromIntersectionPoints(pipeAndMassFormIntersectionList, _commandData);
+
+            //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
+            //Поскольку при создании труб заново, они отсоединяелись
+            PipesFactoryRepo.ConnectPipesAndMEPElementsWithConnectorsInSameLocation(
+                                                    pipeFactory.Pipes, mepElements, _commandData);
+
+            #endregion
+
+            #region Воздуховоды
+            var ducts = DuctRepo.GetDuctModels(_commandData);
+
+            //берём масс-формы и трубы, находим точки пересечения
+            var ductAndMassFormIntersectionList = DuctAndMassIntersectionRepo
+                                                    .GetIntersectionList(ducts, massForms);
+
+            //создаём отдельные трубы из труб, которые пересекаются с формообразующими
+            var ductFactory = new DuctsFactoryRepo();
+            ductFactory.CreateDuctsFromIntersectionPoints(ductAndMassFormIntersectionList, _commandData);
+
+            //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
+            //Поскольку при создании труб заново, они отсоединяелись
+            DuctsFactoryRepo.ConnectPipesAndMEPElementsWithConnectorsInSameLocation(
+                                                    ductFactory.Ducts, mepElements, _commandData);
+            #endregion
+
+            #region Короба
+
+            var conduits = ConduitRepo.GetConduitModels(_commandData);
+
+            //берём масс-формы и трубы, находим точки пересечения
+            var conduitAndMassFormIntersectionList = ConduitAndMassIntersectionRepo
+                                                    .GetIntersectionList(conduits, massForms);
+
+            //создаём отдельные трубы из труб, которые пересекаются с формообразующими
+            var conduitFactory = new ConduitsFactoryRepo();
+            conduitFactory.CreateConduitsFromIntersectionPoints(conduitAndMassFormIntersectionList, _commandData);
+
+            //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
+            //Поскольку при создании труб заново, они отсоединяелись
+            ConduitsFactoryRepo.ConnectConduitsAndMEPElementsWithConnectorsInSameLocation(
+                                                    conduitFactory.Conduits, mepElements, _commandData);
+
+            #endregion
+
+            #region Лотки
+
+            var cableTrays = CableTraysRepo.GetCableTrayModels(_commandData);
+
+            //берём масс-формы и трубы, находим точки пересечения
+            var cableTrayAndMassFormIntersectionList = CableTrayAndMassIntersectionRepo
+                                                    .GetIntersectionList(cableTrays, massForms);
+
+            //создаём отдельные трубы из труб, которые пересекаются с формообразующими
+            var cableTrayFactory = new CableTraysFactoryRepo();
+            cableTrayFactory.CreateCableTraysFromIntersectionPoints(cableTrayAndMassFormIntersectionList, _commandData);
+
+            //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
+            //Поскольку при создании труб заново, они отсоединяелись
+            CableTraysFactoryRepo.ConnectCableTraysAndMEPElementsWithConnectorsInSameLocation(
+                                                    cableTrayFactory.CableTrays, mepElements, _commandData);
+            #endregion
+
             this.Close();
             return;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            var xmlDealer = new XMLDealer();
+            xmlDealer.SaveUserInputToXML(xmlDocUserInputFilePath, txtboxMassFormName);
         }
     }
 }

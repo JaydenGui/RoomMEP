@@ -74,11 +74,17 @@
     <Compile Include="MainForm.xaml.cs">
       <DependentUpon>MainForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\CableTrayAndMassIntersectionModel.cs" />
     <Compile Include="Models\CableTrayModel.cs" />
+    <Compile Include="Models\ConduitAndMassIntersectionModel.cs" />
     <Compile Include="Models\ConduitModel.cs" />
+    <Compile Include="Models\DuctAndMassIntersectionModel.cs" />
     <Compile Include="Models\DuctModel.cs" />
     <Compile Include="Models\MassFormModel.cs" />
-    <Compile Include="Models\PipeAndMassFormIntersection.cs" />
+    <Compile Include="Models\MEPElementModel.cs" />
+    <Compile Include="Models\MEPLineAndMassIntersectionModel.cs" />
+    <Compile Include="Models\MEPLineObject.cs" />
+    <Compile Include="Models\PipeAndMassIntersectionModel.cs" />
     <Compile Include="Models\PipeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -86,6 +92,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repos\CableTrayAndMassIntersectionRepo.cs" />
+    <Compile Include="Repos\CableTraysFactoryRepo.cs" />
+    <Compile Include="Repos\CableTraysRepo.cs" />
+    <Compile Include="Repos\ConduitAndMassIntersectionRepo.cs" />
+    <Compile Include="Repos\ConduitsFactoryRepo.cs" />
+    <Compile Include="Repos\ConduitRepo.cs" />
+    <Compile Include="Repos\DuctAndMassIntersectionRepo.cs" />
+    <Compile Include="Repos\DuctsFactoryRepo.cs" />
+    <Compile Include="Repos\DuctRepo.cs" />
+    <Compile Include="Repos\MassFormRepo.cs" />
+    <Compile Include="Repos\MEPElementRepo.cs" />
+    <Compile Include="Repos\PipeAndMassIntersectionRepo.cs" />
+    <Compile Include="Repos\PipeRepo.cs" />
+    <Compile Include="Repos\PipesFactoryRepo.cs" />
+    <Compile Include="XMLDealer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -101,9 +122,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repos\" />
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TextFilesDealer\TextFilesDealer\TextFilesDealer.csproj">
+      <Project>{0afc5d03-a409-4d69-b4ba-7b7a735db328}</Project>
+      <Name>TextFilesDealer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AssignParameterToInstancesInsideBBox\AssignParameterToInstancesInsideBBox.csproj">
+      <Project>{5F53EE15-AFBE-4278-A1F3-6A47912D910B}</Project>
+      <Name>AssignParameterToInstancesInsideBBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeomShark\GeomShark.csproj">
       <Project>{4305dd02-b631-40ca-a0aa-98b08edf5f17}</Project>
       <Name>GeomShark</Name>

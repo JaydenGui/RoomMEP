@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RevitPSVUtils;
-using Autodesk.Revit.UI;
+using static RevitPSVUtils.PipeExts;
 
 namespace CutMEPCurvesByMassEdges.Models
 {
-    public class MassFormModel
+    public class PipeAndMassIntersectionModel : MEPLineAndMassIntersectionModel
     {
-        public FamilyInstance Model { get; set; }
-        public List<Face> Faces { get; set; }
+        public PipeModel Pipe { get; set; }
+        
     }
 }
