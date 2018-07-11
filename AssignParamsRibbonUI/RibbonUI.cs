@@ -24,10 +24,10 @@ namespace AssignParamsRibbonUI
         {
             //создаем новую вкладку на ленте
             var newRibbon = new RibbonUtils();
-            string tabName = "MEP Utils";
+            string tabName = "SPGR Зонинг";
             newRibbon.CreateTab(app, tabName);
             #region Вкладка армирования проёма
-            var appDesc1 = "MEP Room";
+            var appDesc1 = "Assign";
             var newPanel1 = newRibbon.AddPanel(app, tabName, appDesc1);
             var folderPath1 = @"C:\Program Files\BIMTech Utils\MEP\MEP Room";
             var appNamespace1 = "AssignParameterToInstancesInsideBBox";
@@ -45,7 +45,7 @@ namespace AssignParamsRibbonUI
             button1.ToolTipImage = new BitmapImage(new Uri(imageName1, UriKind.Absolute));
             button1.ToolTip = appDesc1;
 
-            var appDesc2 = "MEP Mass Cut";
+            var appDesc2 = "MEP Cut";
             var newPanel = newRibbon.AddPanel(app, tabName, appDesc2);
             var folderPath2 = @"C:\Program Files\BIMTech Utils\MEP\MEP Room";
             var appNamespace2 = "CutMEPCurvesByMassEdges";

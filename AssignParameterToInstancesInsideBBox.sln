@@ -5,15 +5,12 @@ VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParameterToInstancesInsideBBox", "AssignParameterToInstancesInsideBBox\AssignParameterToInstancesInsideBBox.csproj", "{5F53EE15-AFBE-4278-A1F3-6A47912D910B}"
 	ProjectSection(ProjectDependencies) = postProject
-		{4305DD02-B631-40CA-A0AA-98B08EDF5F17} = {4305DD02-B631-40CA-A0AA-98B08EDF5F17}
 		{57025EB5-24D9-4C72-8DBA-23077A5088A1} = {57025EB5-24D9-4C72-8DBA-23077A5088A1}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParamsRibbonUI", "AssignParamsRibbonUI\AssignParamsRibbonUI.csproj", "{BAB520F1-49A5-4BD5-99E5-793E8B36B230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFilesDealer", "..\TextFilesDealer\TextFilesDealer\TextFilesDealer.csproj", "{0AFC5D03-A409-4D69-B4BA-7B7A735DB328}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMEPRoom", "SetupMEPRoom\SetupMEPRoom.vdproj", "{2327DE75-E1C6-41CD-89FD-FA89C47A8221}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CutMEPCurvesByMassEdges", "CutMEPCurvesByMassEdges\CutMEPCurvesByMassEdges.csproj", "{63963DE3-0EF0-4D40-BA45-3F4F1A809722}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -23,7 +20,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CutMEPCurvesByMassEdges", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitPSVUtils", "..\RevitPSVUtils\RevitPSVUtils\RevitPSVUtils.csproj", "{57025EB5-24D9-4C72-8DBA-23077A5088A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeomShark", "GeomShark\GeomShark.csproj", "{4305DD02-B631-40CA-A0AA-98B08EDF5F17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeomShark", "..\GeomShark\GeomShark\GeomShark.csproj", "{0B5BABA6-96EE-4B7D-A6DA-0DCBA5732042}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMEPUtils", "SetupMEPUtils\SetupMEPUtils.vdproj", "{2E2C872B-4C98-4488-A2A6-4AE12D525842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,8 +42,6 @@ Global
 		{0AFC5D03-A409-4D69-B4BA-7B7A735DB328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AFC5D03-A409-4D69-B4BA-7B7A735DB328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AFC5D03-A409-4D69-B4BA-7B7A735DB328}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2327DE75-E1C6-41CD-89FD-FA89C47A8221}.Debug|Any CPU.ActiveCfg = Debug
-		{2327DE75-E1C6-41CD-89FD-FA89C47A8221}.Release|Any CPU.ActiveCfg = Release
 		{63963DE3-0EF0-4D40-BA45-3F4F1A809722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63963DE3-0EF0-4D40-BA45-3F4F1A809722}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63963DE3-0EF0-4D40-BA45-3F4F1A809722}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +50,12 @@ Global
 		{57025EB5-24D9-4C72-8DBA-23077A5088A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57025EB5-24D9-4C72-8DBA-23077A5088A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57025EB5-24D9-4C72-8DBA-23077A5088A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4305DD02-B631-40CA-A0AA-98B08EDF5F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4305DD02-B631-40CA-A0AA-98B08EDF5F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4305DD02-B631-40CA-A0AA-98B08EDF5F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4305DD02-B631-40CA-A0AA-98B08EDF5F17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B5BABA6-96EE-4B7D-A6DA-0DCBA5732042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B5BABA6-96EE-4B7D-A6DA-0DCBA5732042}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B5BABA6-96EE-4B7D-A6DA-0DCBA5732042}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B5BABA6-96EE-4B7D-A6DA-0DCBA5732042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E2C872B-4C98-4488-A2A6-4AE12D525842}.Debug|Any CPU.ActiveCfg = Debug
+		{2E2C872B-4C98-4488-A2A6-4AE12D525842}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

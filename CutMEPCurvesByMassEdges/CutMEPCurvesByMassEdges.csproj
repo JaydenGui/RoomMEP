@@ -31,34 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BIMTechRebarLicenseUser">
-      <HintPath>..\..\..\..\..\..\..\Program Files\BIMTech Utils\Structure\Contents\License\BIMTechRebarLicenseUser.dll</HintPath>
-    </Reference>
-    <Reference Include="GeometryPSV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Source\Repos\GeometryPSV\GeometryPSV\bin\Debug\GeometryPSV.dll</HintPath>
-    </Reference>
-    <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.0.0\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitPSVUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Source\Repos\RevitPSVUtils\RevitPSVUtils\bin\Debug\RevitPSVUtils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -110,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -125,6 +120,11 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeomShark\GeomShark\GeomShark.csproj">
+      <Project>{0b5baba6-96ee-4b7d-a6da-0dcba5732042}</Project>
+      <Name>GeomShark</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\TextFilesDealer\TextFilesDealer\TextFilesDealer.csproj">
       <Project>{0afc5d03-a409-4d69-b4ba-7b7a735db328}</Project>
       <Name>TextFilesDealer</Name>
@@ -132,10 +132,7 @@
     <ProjectReference Include="..\AssignParameterToInstancesInsideBBox\AssignParameterToInstancesInsideBBox.csproj">
       <Project>{5F53EE15-AFBE-4278-A1F3-6A47912D910B}</Project>
       <Name>AssignParameterToInstancesInsideBBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GeomShark\GeomShark.csproj">
-      <Project>{4305dd02-b631-40ca-a0aa-98b08edf5f17}</Project>
-      <Name>GeomShark</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
