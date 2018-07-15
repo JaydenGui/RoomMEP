@@ -20,6 +20,7 @@ namespace CutMEPCurvesByMassEdges.Repos
             ExternalCommandData commandData)
         {
 
+            #region Создаём трубы из точек пересечения
             foreach (var pipeAndMassInt in pipeAndMassFormIntersectionList)
             {
                 //Выбираем точки, по которым будем создавать трубы
@@ -53,6 +54,17 @@ namespace CutMEPCurvesByMassEdges.Repos
                 if (isNewPipeCreated)
                     DeleteUtils.DeleteElements(commandData, new List<Element> { pipeAndMassInt.Pipe.Model });
             }
+            #endregion
+
+            #region Соединяем новые трубы, соединения которых разорваны
+            foreach (var oPipeFirst in Pipes)
+            {
+                foreach (var oPipeSecond in Pipes)
+                {
+                    oPipeFirst.Model.ConnectToWithUnionFitting(oPipeSecond.Model, commandData);
+                }
+            }
+            #endregion
         }
 
         public static void ConnectPipesAndMEPElementsWithConnectorsInSameLocation(List<PipeModel> pipeModels,

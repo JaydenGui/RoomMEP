@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using CutMEPCurvesByMassEdges.Models;
+using RevitPSVUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace CutMEPCurvesByMassEdges.Repos
         private static ConduitAndMassIntersectionModel GetIntersection(ConduitModel ConduitModel, MassFormModel massFormModel)
         {
             var intersectionsInstance = new ConduitAndMassIntersectionModel { Conduit = ConduitModel, MassForm = massFormModel };
-            var ConduitCurveStartPoint = ConduitModel.StarPoint;
-            var ConduitCurveEndPoint = ConduitModel.EndPoint;
+            var conduitCurveStartPoint = ConduitModel.StarPoint;
+            var conduitCurveEndPoint = ConduitModel.EndPoint;
 
             foreach (var massFace in massFormModel.Faces)
             {
@@ -28,10 +29,17 @@ namespace CutMEPCurvesByMassEdges.Repos
                         continue;
 
                     var intersectPoint = intResult.XYZPoint;
+
+                    bool isIntersectPointInRange
+                        = NumberUtils.IsInRange(
+                            intersectPoint.Z,
+                            Math.Min(conduitCurveStartPoint.Z, conduitCurveStartPoint.Z),
+                            Math.Max(conduitCurveEndPoint.Z, conduitCurveEndPoint.Z));
+
                     //проверяем находится ли точка на линии
                     if (GeomShark.PointUtils.IsPointBetweenOtherTwoPoints(
-                                                            ConduitCurveStartPoint.X, ConduitCurveStartPoint.Y,
-                                                            ConduitCurveEndPoint.X, ConduitCurveEndPoint.Y,
+                                                            conduitCurveStartPoint.X, conduitCurveStartPoint.Y,
+                                                            conduitCurveEndPoint.X, conduitCurveEndPoint.Y,
                                                             intersectPoint.X, intersectPoint.Y, 4))
                     {
                         intersectionsInstance.IntersectionPoints.Add(intersectPoint);

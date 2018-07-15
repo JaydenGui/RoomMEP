@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using CutMEPCurvesByMassEdges.Models;
+using RevitPSVUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace CutMEPCurvesByMassEdges.Repos
         private static DuctAndMassIntersectionModel GetIntersection(DuctModel DuctModel, MassFormModel massFormModel)
         {
             var intersectionsInstance = new DuctAndMassIntersectionModel { Duct = DuctModel, MassForm = massFormModel };
-            var DuctCurveStartPoint = DuctModel.StarPoint;
-            var DuctCurveEndPoint = DuctModel.EndPoint;
+            var ductCurveStartPoint = DuctModel.StarPoint;
+            var ductCurveEndPoint = DuctModel.EndPoint;
 
             foreach (var massFace in massFormModel.Faces)
             {
@@ -22,17 +23,28 @@ namespace CutMEPCurvesByMassEdges.Repos
                 massFace.Intersect(DuctModel.Curve, out intersectionResultArray);
                 if (intersectionResultArray == null)
                     continue;
+
+                
+
                 foreach (IntersectionResult intResult in intersectionResultArray)
                 {
                     if (intResult.XYZPoint == null)
                         continue;
 
                     var intersectPoint = intResult.XYZPoint;
+
+                    bool isIntersectPointInRange
+                        = NumberUtils.IsInRange(
+                            intersectPoint.Z,
+                            Math.Min(ductCurveStartPoint.Z, ductCurveStartPoint.Z),
+                            Math.Max(ductCurveEndPoint.Z, ductCurveEndPoint.Z));
+
                     //проверяем находится ли точка на линии
                     if (GeomShark.PointUtils.IsPointBetweenOtherTwoPoints(
-                                                            DuctCurveStartPoint.X, DuctCurveStartPoint.Y,
-                                                            DuctCurveEndPoint.X, DuctCurveEndPoint.Y,
-                                                            intersectPoint.X, intersectPoint.Y, 4))
+                                                            ductCurveStartPoint.X, ductCurveStartPoint.Y,
+                                                            ductCurveEndPoint.X, ductCurveEndPoint.Y,
+                                                            intersectPoint.X, intersectPoint.Y, 4) &&
+                        isIntersectPointInRange)
                     {
                         intersectionsInstance.IntersectionPoints.Add(intersectPoint);
                     }

@@ -68,7 +68,7 @@ namespace CutMEPCurvesByMassEdges
             pipeFactory.CreatePipesFromIntersectionPoints(pipeAndMassFormIntersectionList, _commandData);
 
             //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
-            //Поскольку при создании труб заново, они отсоединяелись
+            //Поскольку при создании труб заново, они отсоединялись
             PipesFactoryRepo.ConnectPipesAndMEPElementsWithConnectorsInSameLocation(
                                                     pipeFactory.Pipes, mepElements, _commandData);
 

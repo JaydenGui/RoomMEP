@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RevitPSVUtils.DuctExts;
 
 namespace CutMEPCurvesByMassEdges.Repos
 {
@@ -49,6 +50,14 @@ namespace CutMEPCurvesByMassEdges.Repos
                         Ducts.Add(newDuctModel);
                     }
 
+                }
+
+                foreach (var oDuctFirst in Ducts)
+                {
+                    foreach (var oDuctSecond in Ducts)
+                    {
+                        oDuctFirst.Model.ConnectToWithUnionFitting(oDuctSecond.Model, commandData);
+                    }
                 }
 
                 if (isNewPipeCreated)

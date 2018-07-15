@@ -1,5 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using CutMEPCurvesByMassEdges.Models;
+using RevitPSVUtils;
+using System;
 using System.Collections.Generic;
 
 namespace CutMEPCurvesByMassEdges.Repos
@@ -14,8 +16,8 @@ namespace CutMEPCurvesByMassEdges.Repos
                 MassForm = massFormModel
             };
 
-            var CableTrayCurveStartPoint = CableTrayModel.StarPoint;
-            var CableTrayCurveEndPoint = CableTrayModel.EndPoint;
+            var cableTrayCurveStartPoint = CableTrayModel.StarPoint;
+            var cableTrayCurveEndPoint = CableTrayModel.EndPoint;
 
             foreach (var massFace in massFormModel.Faces)
             {
@@ -28,11 +30,20 @@ namespace CutMEPCurvesByMassEdges.Repos
                     if (intResult.XYZPoint == null)
                         continue;
 
+                    
+
                     var intersectPoint = intResult.XYZPoint;
+
+                    bool isIntersectPointInRange
+                        = NumberUtils.IsInRange(
+                            intersectPoint.Z,
+                            Math.Min(cableTrayCurveStartPoint.Z, cableTrayCurveStartPoint.Z),
+                            Math.Max(cableTrayCurveEndPoint.Z, cableTrayCurveEndPoint.Z));
+
                     //проверяем находится ли точка на линии
                     if (GeomShark.PointUtils.IsPointBetweenOtherTwoPoints(
-                                                            CableTrayCurveStartPoint.X, CableTrayCurveStartPoint.Y,
-                                                            CableTrayCurveEndPoint.X, CableTrayCurveEndPoint.Y,
+                                                            cableTrayCurveStartPoint.X, cableTrayCurveStartPoint.Y,
+                                                            cableTrayCurveEndPoint.X, cableTrayCurveEndPoint.Y,
                                                             intersectPoint.X, intersectPoint.Y, 4))
                     {
                         intersectionsInstance.IntersectionPoints.Add(intersectPoint);

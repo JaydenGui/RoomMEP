@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using CutMEPCurvesByMassEdges.Models;
+using RevitPSVUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,20 @@ namespace CutMEPCurvesByMassEdges.Repos
                 {
                     if (intResult.XYZPoint == null)
                         continue;
-
                     var intersectPoint = intResult.XYZPoint;
-                    //проверяем находится ли точка на линии
+                    //проверяем находится ли точка на линии по ХУ и по высотной отметке Z
+
+                    bool isIntersectPointInRange
+                        = NumberUtils.IsInRange(
+                            intersectPoint.Z,
+                            Math.Min(pipeCurveStartPoint.Z, pipeCurveEndPoint.Z),
+                            Math.Max(pipeCurveStartPoint.Z, pipeCurveEndPoint.Z));
+
                     if (GeomShark.PointUtils.IsPointBetweenOtherTwoPoints(
                                                             pipeCurveStartPoint.X, pipeCurveStartPoint.Y,
                                                             pipeCurveEndPoint.X, pipeCurveEndPoint.Y,
-                                                            intersectPoint.X, intersectPoint.Y, 4))
+                                                            intersectPoint.X, intersectPoint.Y, 4) &&
+                         isIntersectPointInRange)
                     {
                         intersectionsInstance.IntersectionPoints.Add(intersectPoint);
                     }
