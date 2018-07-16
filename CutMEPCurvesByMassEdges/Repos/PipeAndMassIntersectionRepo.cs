@@ -11,7 +11,10 @@ namespace CutMEPCurvesByMassEdges.Repos
 {
     public class PipeAndMassIntersectionRepo
     {
-        private static PipeAndMassIntersectionModel GetIntersection(PipeModel pipeModel, MassFormModel massFormModel)
+        private static PipeAndMassIntersectionModel GetIntersection(
+            PipeModel pipeModel,
+            MassFormModel massFormModel,
+            List<XYZ> fittingPointList)
         {
             var intersectionsInstance = new PipeAndMassIntersectionModel { Pipe = pipeModel, MassForm = massFormModel };
             var pipeCurveStartPoint = pipeModel.StarPoint;
@@ -28,18 +31,34 @@ namespace CutMEPCurvesByMassEdges.Repos
                     if (intResult.XYZPoint == null)
                         continue;
                     var intersectPoint = intResult.XYZPoint;
-                    //проверяем находится ли точка на линии по ХУ и по высотной отметке Z
 
+                    //Проверяем совпадает ли точка пересечения с точкой коннектора фитинга
+                    bool isFittingPointMatch = false;
+                    foreach (var fittingPoint in fittingPointList)
+                    {
+                        if (intersectPoint.IsEqualByXYZ(fittingPoint, 5))
+                        {
+                            isFittingPointMatch = true;
+                            break;
+                        }
+                    }
+
+                    if (isFittingPointMatch)
+                        continue;
+
+                    //Если точка коннектора трубы совпадает с точкой пересечения, то улетаем
+                    if (intersectPoint.IsEqualByXYZ(pipeCurveStartPoint, 5) ||
+                        intersectPoint.IsEqualByXYZ(pipeCurveEndPoint, 5))
+                        continue;
+
+                    //проверяем находится ли точка на линии по ХУ и по высотной отметке Z
                     bool isIntersectPointInRange
                         = NumberUtils.IsInRange(
                             intersectPoint.Z,
                             Math.Min(pipeCurveStartPoint.Z, pipeCurveEndPoint.Z),
                             Math.Max(pipeCurveStartPoint.Z, pipeCurveEndPoint.Z));
 
-                    if (GeomShark.PointUtils.IsPointBetweenOtherTwoPoints(
-                                                            pipeCurveStartPoint.X, pipeCurveStartPoint.Y,
-                                                            pipeCurveEndPoint.X, pipeCurveEndPoint.Y,
-                                                            intersectPoint.X, intersectPoint.Y, 4) &&
+                    if (intersectPoint.IsPointBetweenOtherPoints(pipeCurveEndPoint, pipeCurveStartPoint, 5) &&
                          isIntersectPointInRange)
                     {
                         intersectionsInstance.IntersectionPoints.Add(intersectPoint);
@@ -51,7 +70,7 @@ namespace CutMEPCurvesByMassEdges.Repos
         }
 
         public static List<PipeAndMassIntersectionModel> GetIntersectionList(List<PipeModel> pipeModelList,
-            List<MassFormModel> massFormModelList)
+            List<MassFormModel> massFormModelList, List<XYZ> fittingPointList)
         {
             var pipeAndMassFormIntersectionList = new List<PipeAndMassIntersectionModel>();
 
@@ -60,7 +79,7 @@ namespace CutMEPCurvesByMassEdges.Repos
                 foreach (var oPipe in pipeModelList)
                 {
 
-                    var pipeAndMassFormIntersection = GetIntersection(oPipe, massFormItem);
+                    var pipeAndMassFormIntersection = GetIntersection(oPipe, massFormItem, fittingPointList);
                     if (pipeAndMassFormIntersection == null)
                         continue;
                     pipeAndMassFormIntersectionList.Add(pipeAndMassFormIntersection);

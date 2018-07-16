@@ -74,6 +74,7 @@
     <Compile Include="Models\ConduitModel.cs" />
     <Compile Include="Models\DuctAndMassIntersectionModel.cs" />
     <Compile Include="Models\DuctModel.cs" />
+    <Compile Include="Models\FittingModel.cs" />
     <Compile Include="Models\MassFormModel.cs" />
     <Compile Include="Models\MEPElementModel.cs" />
     <Compile Include="Models\MEPLineAndMassIntersectionModel.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Repos\DuctAndMassIntersectionRepo.cs" />
     <Compile Include="Repos\DuctsFactoryRepo.cs" />
     <Compile Include="Repos\DuctRepo.cs" />
+    <Compile Include="Repos\FittingRepo.cs" />
     <Compile Include="Repos\MassFormRepo.cs" />
     <Compile Include="Repos\MEPElementRepo.cs" />
     <Compile Include="Repos\PipeAndMassIntersectionRepo.cs" />

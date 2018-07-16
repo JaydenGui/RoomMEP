@@ -6,6 +6,9 @@ using System;
 using System.Xml.Linq;
 using static TextFilesDealer.DirectoryUtils;
 using System.IO;
+using RevitPSVUtils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CutMEPCurvesByMassEdges
 {
@@ -45,6 +48,12 @@ namespace CutMEPCurvesByMassEdges
 
         private void btnAccept_Click(object sender, RoutedEventArgs e)
         {
+            //Определяем точки, в которых стоят фитинги для труб и воздуховодов
+            var fittingRepo = new FittingRepo();
+            var pipeFittingPoints = fittingRepo.GetConnectorPoints(_commandData, BuiltInCategory.OST_PipeFitting);
+            var ductFittingPoints = fittingRepo.GetConnectorPoints(_commandData, BuiltInCategory.OST_DuctFitting);
+            var pipeCurvesToCheck = PipesUtils.GetAllThePipeSegments(_commandData).Select(p => p.GetStartAndEndPoint()).ToList();
+
             //собираем все линейные объекты и масс-формы по названию
 
             var massForms = MassFormRepo.GetMassFormModels(_commandData, txtboxMassFormName.Text);
@@ -61,11 +70,12 @@ namespace CutMEPCurvesByMassEdges
 
             //берём масс-формы и трубы, находим точки пересечения
             var pipeAndMassFormIntersectionList = PipeAndMassIntersectionRepo
-                                                    .GetIntersectionList(pipes, massForms);
+                                                    .GetIntersectionList(pipes, massForms, pipeFittingPoints);
 
             //создаём отдельные трубы из труб, которые пересекаются с формообразующими
             var pipeFactory = new PipesFactoryRepo();
-            pipeFactory.CreatePipesFromIntersectionPoints(pipeAndMassFormIntersectionList, _commandData);
+            pipeFactory.CreatePipesFromIntersectionPoints(
+                            pipeAndMassFormIntersectionList, pipeCurvesToCheck, _commandData);
 
             //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
             //Поскольку при создании труб заново, они отсоединялись

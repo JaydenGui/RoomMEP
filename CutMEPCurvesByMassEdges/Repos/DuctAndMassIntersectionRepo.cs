@@ -24,8 +24,6 @@ namespace CutMEPCurvesByMassEdges.Repos
                 if (intersectionResultArray == null)
                     continue;
 
-                
-
                 foreach (IntersectionResult intResult in intersectionResultArray)
                 {
                     if (intResult.XYZPoint == null)
