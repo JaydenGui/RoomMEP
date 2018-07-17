@@ -11,7 +11,8 @@ namespace CutMEPCurvesByMassEdges.Repos
 {
     public class DuctAndMassIntersectionRepo
     {
-        private static DuctAndMassIntersectionModel GetIntersection(DuctModel DuctModel, MassFormModel massFormModel)
+        private static DuctAndMassIntersectionModel GetIntersection(
+            DuctModel DuctModel, MassFormModel massFormModel, List<XYZ> fittingPointList)
         {
             var intersectionsInstance = new DuctAndMassIntersectionModel { Duct = DuctModel, MassForm = massFormModel };
             var ductCurveStartPoint = DuctModel.StarPoint;
@@ -30,6 +31,25 @@ namespace CutMEPCurvesByMassEdges.Repos
                         continue;
 
                     var intersectPoint = intResult.XYZPoint;
+
+                    //Проверяем совпадает ли точка пересечения с точкой коннектора фитинга
+                    bool isFittingPointMatch = false;
+                    foreach (var fittingPoint in fittingPointList)
+                    {
+                        if (intersectPoint.IsEqualByXYZ(fittingPoint, 5))
+                        {
+                            isFittingPointMatch = true;
+                            break;
+                        }
+                    }
+
+                    if (isFittingPointMatch)
+                        continue;
+
+                    //Если точка коннектора трубы совпадает с точкой пересечения, то улетаем
+                    if (intersectPoint.IsEqualByXYZ(ductCurveStartPoint, 5) ||
+                        intersectPoint.IsEqualByXYZ(ductCurveEndPoint, 5))
+                        continue;
 
                     bool isIntersectPointInRange
                         = NumberUtils.IsInRange(
@@ -52,23 +72,25 @@ namespace CutMEPCurvesByMassEdges.Repos
             return (intersectionsInstance.IntersectionPoints.Count > 0) ? intersectionsInstance : null;
         }
 
-        public static List<DuctAndMassIntersectionModel> GetIntersectionList(List<DuctModel> DuctModelList,
-            List<MassFormModel> massFormModelList)
+        public static List<DuctAndMassIntersectionModel> GetIntersectionList(
+            List<DuctModel> DuctModelList,
+            List<MassFormModel> massFormModelList,
+            List<XYZ> fittingPointList)
         {
-            var DuctAndMassFormIntersectionList = new List<DuctAndMassIntersectionModel>();
+            var ductAndMassFormIntersectionList = new List<DuctAndMassIntersectionModel>();
 
             foreach (var massFormItem in massFormModelList)
             {
                 foreach (var oDuct in DuctModelList)
                 {
 
-                    var DuctAndMassFormIntersection = GetIntersection(oDuct, massFormItem);
-                    if (DuctAndMassFormIntersection == null)
+                    var ductAndMassFormIntersection = GetIntersection(oDuct, massFormItem, fittingPointList);
+                    if (ductAndMassFormIntersection == null)
                         continue;
-                    DuctAndMassFormIntersectionList.Add(DuctAndMassFormIntersection);
+                    ductAndMassFormIntersectionList.Add(ductAndMassFormIntersection);
                 }
             }
-            return DuctAndMassFormIntersectionList;
+            return ductAndMassFormIntersectionList;
         }
     }
 }

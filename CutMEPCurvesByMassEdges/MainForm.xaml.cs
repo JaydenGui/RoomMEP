@@ -9,6 +9,8 @@ using System.IO;
 using RevitPSVUtils;
 using System.Collections.Generic;
 using System.Linq;
+using Autodesk.Revit.DB.Plumbing;
+using Autodesk.Revit.DB.Mechanical;
 
 namespace CutMEPCurvesByMassEdges
 {
@@ -52,7 +54,8 @@ namespace CutMEPCurvesByMassEdges
             var fittingRepo = new FittingRepo();
             var pipeFittingPoints = fittingRepo.GetConnectorPoints(_commandData, BuiltInCategory.OST_PipeFitting);
             var ductFittingPoints = fittingRepo.GetConnectorPoints(_commandData, BuiltInCategory.OST_DuctFitting);
-            var pipeCurvesToCheck = PipesUtils.GetAllThePipeSegments(_commandData).Select(p => p.GetStartAndEndPoint()).ToList();
+            var pipePointsToCheck = GenericSelectionUtils<Pipe>.GetObjectsByType(_commandData).Select(p => p.GetStartAndEndPoint()).ToList();
+            var ductPointsToCheck = GenericSelectionUtils<Duct>.GetObjectsByType(_commandData).Select(p => p.GetStartAndEndPoint()).ToList();
 
             //собираем все линейные объекты и масс-формы по названию
 
@@ -75,7 +78,7 @@ namespace CutMEPCurvesByMassEdges
             //создаём отдельные трубы из труб, которые пересекаются с формообразующими
             var pipeFactory = new PipesFactoryRepo();
             pipeFactory.CreatePipesFromIntersectionPoints(
-                            pipeAndMassFormIntersectionList, pipeCurvesToCheck, _commandData);
+                            pipeAndMassFormIntersectionList, pipePointsToCheck, _commandData);
 
             //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
             //Поскольку при создании труб заново, они отсоединялись
@@ -89,11 +92,12 @@ namespace CutMEPCurvesByMassEdges
 
             //берём масс-формы и трубы, находим точки пересечения
             var ductAndMassFormIntersectionList = DuctAndMassIntersectionRepo
-                                                    .GetIntersectionList(ducts, massForms);
+                                                    .GetIntersectionList(ducts, massForms, ductFittingPoints);
 
             //создаём отдельные трубы из труб, которые пересекаются с формообразующими
             var ductFactory = new DuctsFactoryRepo();
-            ductFactory.CreateDuctsFromIntersectionPoints(ductAndMassFormIntersectionList, _commandData);
+            ductFactory.CreateDuctsFromIntersectionPoints(
+                ductAndMassFormIntersectionList, ductPointsToCheck, _commandData);
 
             //Берем новые трубы и соединяем их с фитингами, арматурой и приборами.
             //Поскольку при создании труб заново, они отсоединяелись

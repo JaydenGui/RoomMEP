@@ -31,7 +31,6 @@ namespace CutMEPCurvesByMassEdges.Repos
                                                 .OrderBy(p => p.DistanceTo(pipeAndMassInt.Pipe.StarPoint)).ToList());
                 pointsToCreatePipes.Add(pipeAndMassInt.Pipe.EndPoint);
                 bool isNewPipeCreated = false;
-                Pipe newPipe = null;
                 for (int i = 0; i < pointsToCreatePipes.Count; i++)
                 {
                     if (i == 0)
@@ -64,7 +63,7 @@ namespace CutMEPCurvesByMassEdges.Repos
                     if (currentPoint.IsEqualByXYZ(prevPoint, 5))
                         continue;
                     //Создаём новую трубу по новым точкам, но присваивая свойства прошлой трубы
-                    newPipe = PipesUtils.CreateNewPipeByTypeOfExisted(
+                    var newPipe = PipesUtils.CreateNewPipeByTypeOfExisted(
                         pipeAndMassInt.Pipe.Model, currentPoint, prevPoint, commandData);
                     if (newPipe == null)
                         continue;

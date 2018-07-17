@@ -17,6 +17,7 @@ namespace CutMEPCurvesByMassEdges.Repos
 
         public void CreateDuctsFromIntersectionPoints(
             List<DuctAndMassIntersectionModel> ductAndMassFormIntersectionList,
+            List<List<XYZ>> ductPointsToCheckList,
             ExternalCommandData commandData)
         {
 
@@ -36,6 +37,28 @@ namespace CutMEPCurvesByMassEdges.Repos
                         continue;
                     var currentPoint = pointsToCreatePipes[i];
                     var prevPoint = pointsToCreatePipes[i - 1];
+
+                    //Проверяем, совпадают ли точки новой трубы с точками труб из модели
+                    bool areNewAndOldPipePointsMatch = false;
+                    foreach (var pointsCheck in ductPointsToCheckList)
+                    {
+                        if (pointsCheck.Count < 2)
+                            continue;
+                        if (pointsCheck[0].IsEqualByXYZ(currentPoint, 5) &&
+                            pointsCheck[1].IsEqualByXYZ(prevPoint, 5))
+                        {
+                            areNewAndOldPipePointsMatch = true;
+                        }
+                        else if (pointsCheck[0].IsEqualByXYZ(prevPoint, 5) &&
+                            pointsCheck[1].IsEqualByXYZ(currentPoint, 5))
+                        {
+                            areNewAndOldPipePointsMatch = true;
+                        }
+                    }
+
+                    if (areNewAndOldPipePointsMatch)
+                        continue;
+
                     if (currentPoint.IsEqualByXYZ(prevPoint, 5))
                         continue;
                     //Создаём новую трубу по новым точкам, но присваивая свойства прошлой трубы
