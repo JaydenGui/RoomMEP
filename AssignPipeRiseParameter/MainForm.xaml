@@ -1,0 +1,53 @@
+﻿<Window x:Class="AssignPipeRiseParameter.MainForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AssignPipeRiseParameter"
+             mc:Ignorable="d" Title="MEP Rise"
+             Height="200" Width="400" ResizeMode="NoResize" Closed="Window_Closed">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Имя параметра"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"/>
+        <TextBox 
+            Grid.Column="1"
+            Grid.Row="0"
+            Text="Rise"
+            MinWidth="100"
+            Name="txtboxParameterRise"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBlock Text="Элемент является стояком, если разница отметок больше или равна, мм"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   
+                   TextWrapping="Wrap"
+                   Grid.Row="1"/>
+        <TextBox 
+            Grid.Column="1"
+            Grid.Row="1"
+            Text="300"
+            MinWidth="100"
+            Name="txtboxRiseHeight"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <Button Name="btnAccept"
+                Margin="5"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Width="140"
+                Content="Применить" Click="btnAccept_Click"/>
+    </Grid>
+</Window>

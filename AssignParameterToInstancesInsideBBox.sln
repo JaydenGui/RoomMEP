@@ -19,9 +19,9 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMEPUtils", "SetupMEPUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParameterToInstancesInsideBBox", "AssignParameterToInstancesInsideBBox\AssignParameterToInstancesInsideBBox.csproj", "{5F53EE15-AFBE-4278-A1F3-6A47912D910B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignPipeRiseParameter", "..\AssignPipeRiseParameter\AssignPipeRiseParameter\AssignPipeRiseParameter.csproj", "{2488CBF9-90F7-4818-9C87-F130920ACE53}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignParamsRibbonUI", "AssignParamsRibbonUI\AssignParamsRibbonUI.csproj", "{BAB520F1-49A5-4BD5-99E5-793E8B36B230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignPipeRiseParameter", "AssignPipeRiseParameter\AssignPipeRiseParameter.csproj", "{2488CBF9-90F7-4818-9C87-F130920ACE53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +51,14 @@ Global
 		{5F53EE15-AFBE-4278-A1F3-6A47912D910B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F53EE15-AFBE-4278-A1F3-6A47912D910B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F53EE15-AFBE-4278-A1F3-6A47912D910B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BAB520F1-49A5-4BD5-99E5-793E8B36B230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BAB520F1-49A5-4BD5-99E5-793E8B36B230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAB520F1-49A5-4BD5-99E5-793E8B36B230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAB520F1-49A5-4BD5-99E5-793E8B36B230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2488CBF9-90F7-4818-9C87-F130920ACE53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
