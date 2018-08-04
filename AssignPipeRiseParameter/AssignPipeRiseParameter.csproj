@@ -82,6 +82,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeomShark\GeomShark\GeomShark.csproj">
+      <Project>{0b5baba6-96ee-4b7d-a6da-0dcba5732042}</Project>
+      <Name>GeomShark</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TextFilesDealer\TextFilesDealer\TextFilesDealer.csproj">
       <Project>{0afc5d03-a409-4d69-b4ba-7b7a735db328}</Project>
       <Name>TextFilesDealer</Name>

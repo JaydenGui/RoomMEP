@@ -13,13 +13,16 @@ namespace AssignPipeRiseParameter
 {
     public class XMLDealer
     {
+        //txtboxParameterRise, 
+        //                                txtboxRiseToleranceByXY, txtboxRiseToleranceByZ
         public void SaveUserInputToXML(string xmlFilePath,
-            TextBox txtboxParameterRise, TextBox txtboxParamLength)
+            TextBox txtboxParameterRise, TextBox txtboxRiseToleranceByXY, TextBox txtboxRiseToleranceByZ)
         {
             var xmlDoc =
                 new XElement("AssignPipeRiseParameter",
                         new XElement(nameof(txtboxParameterRise), txtboxParameterRise.Text),
-                        new XElement(nameof(txtboxParamLength), txtboxParamLength.Text)
+                        new XElement(nameof(txtboxRiseToleranceByXY), txtboxRiseToleranceByXY.Text),
+                        new XElement(nameof(txtboxRiseToleranceByZ), txtboxRiseToleranceByZ.Text)
 
                     );
             //если в директорию записывать нельзя, то уходим
@@ -34,15 +37,19 @@ namespace AssignPipeRiseParameter
 
         public void GetXMLDataToWPF(
             string xmlDataPath,
-            ref TextBox txtboxParameterRise, ref TextBox txtboxParamLength)
+            ref TextBox txtboxParameterRise, ref TextBox txtboxRiseToleranceByXY, ref TextBox txtboxRiseToleranceByZ)
         {
             if (!File.Exists(xmlDataPath))
                 return;
             var xmlDocUserInput = XDocument.Load(xmlDataPath);
             var xmlMainRebarSettings = xmlDocUserInput.Descendants("AssignPipeRiseParameter");
 
-            txtboxParameterRise.Text = xmlMainRebarSettings.Descendants(nameof(txtboxParameterRise)).First().Value;
-            txtboxParamLength.Text = xmlMainRebarSettings.Descendants(nameof(txtboxParamLength)).First().Value;
+            if (xmlMainRebarSettings.Descendants(nameof(txtboxParameterRise)).FirstOrDefault() != null)
+                txtboxParameterRise.Text = xmlMainRebarSettings.Descendants(nameof(txtboxParameterRise)).FirstOrDefault().Value;
+            if (xmlMainRebarSettings.Descendants(nameof(txtboxRiseToleranceByXY)).FirstOrDefault() != null)
+                txtboxRiseToleranceByXY.Text = xmlMainRebarSettings.Descendants(nameof(txtboxRiseToleranceByXY)).FirstOrDefault().Value;
+            if (xmlMainRebarSettings.Descendants(nameof(txtboxRiseToleranceByZ)).FirstOrDefault() != null)
+                txtboxRiseToleranceByZ.Text = xmlMainRebarSettings.Descendants(nameof(txtboxRiseToleranceByZ)).FirstOrDefault().Value;
         }
     }
 }

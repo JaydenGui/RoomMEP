@@ -62,7 +62,7 @@ namespace AssignPipeRiseParameter
 
             var xmlDealer = new XMLDealer();
             xmlDealer.GetXMLDataToWPF(xmlDocUserInputFilePath,
-                ref txtboxParameterRise, ref txtboxRiseHeight);
+                ref txtboxParameterRise, ref txtboxRiseToleranceByXY, ref txtboxRiseToleranceByZ);
             #endregion
 
         }
@@ -70,7 +70,8 @@ namespace AssignPipeRiseParameter
         private void Window_Closed(object sender, EventArgs e)
         {
             var xmlDealer = new XMLDealer();
-            xmlDealer.SaveUserInputToXML(xmlDocUserInputFilePath, txtboxParameterRise, txtboxRiseHeight);
+            xmlDealer.SaveUserInputToXML(xmlDocUserInputFilePath, txtboxParameterRise, 
+                                        txtboxRiseToleranceByXY, txtboxRiseToleranceByZ);
         }
 
         private void btnAccept_Click(object sender, RoutedEventArgs e)
@@ -81,23 +82,25 @@ namespace AssignPipeRiseParameter
             var cableTrays = GenericSelectionUtils<CableTray>.GetObjectsByType(_commandData).Cast<Element>().ToList();
             var conduits = GenericSelectionUtils<Conduit>.GetObjectsByType(_commandData).Cast<Element>().ToList();
 
-            var heightParsedValue = NumberUtils.ParseStringToDouble(txtboxRiseHeight.Text);
-            if (heightParsedValue == 0)
+            var distanceBetweenPoints2DParsedValue = NumberUtils.ParseStringToDouble(txtboxRiseToleranceByXY.Text);
+            var heightBetweenPoints2DParsedValue = NumberUtils.ParseStringToDouble(txtboxRiseToleranceByZ.Text);
+            if (distanceBetweenPoints2DParsedValue == 0)
             {
                 this.Close();
                 return;
             }
 
-            var heightMaxFeet = NumberUtils.MillimetersToFeet(heightParsedValue);
+            var distanceBetweenPoints2d = NumberUtils.MillimetersToFeet(distanceBetweenPoints2DParsedValue);
+            var heightBetweenPoints2d = NumberUtils.MillimetersToFeet(heightBetweenPoints2DParsedValue);
 
             //Записываем параметр
             var parameterRiseName = txtboxParameterRise.Text;
             var parameterRiseValue = "Стояк";
 
-            var ductsRises = new MEPRise().CreateMEPLines(ducts, heightMaxFeet).Select(d => d.Model).ToList();
-            var pipeRises = new MEPRise().CreateMEPLines(pipes, heightMaxFeet).Select(d => d.Model).ToList();
-            var cableTrayRises = new MEPRise().CreateMEPLines(cableTrays, heightMaxFeet).Select(d => d.Model).ToList();
-            var conduitRises = new MEPRise().CreateMEPLines(conduits, heightMaxFeet).Select(d => d.Model).ToList();
+            var ductsRises = new MEPRise().GetMEPRises(ducts, distanceBetweenPoints2d, heightBetweenPoints2d).Select(d => d.Model).ToList();
+            var pipeRises = new MEPRise().GetMEPRises(pipes, distanceBetweenPoints2d, heightBetweenPoints2d).Select(d => d.Model).ToList();
+            var cableTrayRises = new MEPRise().GetMEPRises(cableTrays, distanceBetweenPoints2d, heightBetweenPoints2d).Select(d => d.Model).ToList();
+            var conduitRises = new MEPRise().GetMEPRises(conduits, distanceBetweenPoints2d, heightBetweenPoints2d).Select(d => d.Model).ToList();
 
             ElementUtils.SetParameterValueToElementList(_commandData, ductsRises, parameterRiseName, parameterRiseValue);
             ElementUtils.SetParameterValueToElementList(_commandData, pipeRises, parameterRiseName, parameterRiseValue);
