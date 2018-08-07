@@ -81,6 +81,23 @@ namespace AssignParamsRibbonUI
             button3.ToolTipImage = new BitmapImage(new Uri(imageName3, UriKind.Absolute));
             button3.ToolTip = appDesc3;
 
+            var appDesc4 = "Signature";
+            var newPanel4 = newRibbon.AddPanel(app, tabName, appDesc4);
+            var folderPath4 = @"C:\Program Files\BIMTech Utils\MEP\MEP Room";
+            var appNamespace4 = "SetViewSheetSignature";
+            var dllPath4 = $@"Contents\{appNamespace4}.dll";
+            var fullPath4 = Path.Combine(folderPath4, dllPath4);
+            //добавляем кнопку на панель
+            var button4 = newPanel4.AddButton(
+                appDesc4,
+                fullPath4,
+                $"{appNamespace4}.Main");
+            //задаём кнопке изображение
+            var imageName4 = Path.Combine(folderPath4, @"UI\Images\signature.png");
+            button4.Image = new BitmapImage(new Uri(imageName4, UriKind.Absolute));
+            button4.LargeImage = new BitmapImage(new Uri(imageName4, UriKind.Absolute));
+            button4.ToolTipImage = new BitmapImage(new Uri(imageName4, UriKind.Absolute));
+            button3.ToolTip = appDesc3;
             #endregion
             return Result.Succeeded;
         }
